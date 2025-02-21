@@ -56,7 +56,8 @@ function App() {
                     <Route path="/camera" element={<CameraFeed />} />
                     <Route path="/translator" element={<Translator />} />
                     <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-                    <Route path="/about" element={<AboutUs/>}/>
+                    <Route path="/" element={<h1>Home Page</h1>} />
+                    <Route path="/about" element={<AboutUs />} />
                 </Routes>
             </div>
         </Router>

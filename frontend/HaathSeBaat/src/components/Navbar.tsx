@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-const navigate=useNavigate();
+
 
 const LinkIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,10 +35,10 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item active">
-            <a className="nav-link text-white" href="AboutUs.tsx">Home <span className="sr-only">(current)</span></a>
+          <Link className="nav-link text-white" to="/">Home</Link>
           </li>
           <li className="nav-item">
-          <a className="nav-link" href="#about">About Us</a> {/* Smooth scroll */}
+          <Link className="nav-link text-white" to="/about">About Us</Link>
           </li>
           <li className="nav-item">
             <a className="nav-link text-white" href="#">Features</a>
