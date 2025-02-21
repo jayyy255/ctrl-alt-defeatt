@@ -1,3 +1,4 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
@@ -8,7 +9,12 @@ module.exports = {
           accent: "#22c55e", // Green buttons
           textDark: "#000000",
           textLight: "#4b5563",
+          customYellow: "#fde047",
         },
+        fontFamily: {
+            poppins: ["Poppins", "sans-serif"],
+            fredoka: ["Fredoka", "sans-serif"],
+          },
         fontSize: {
           title: "2.5rem",
           description: "1.25rem",
