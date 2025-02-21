@@ -9,6 +9,7 @@ const CameraFeed = () => {
     const [prediction, setPrediction] = useState('');
     let intervalRef = useRef(null);
 
+    // Start camera stream
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -16,10 +17,11 @@ const CameraFeed = () => {
                 videoRef.current.srcObject = stream;
             }
         } catch (error) {
-            console.error('Error accessing the camera:', error);
+            console.error('🚫 Error accessing the camera:', error);
         }
     };
 
+    // Capture frame from video
     const captureFrame = () => {
         const video = videoRef.current;
         const canvas = canvasRef.current;
@@ -32,6 +34,7 @@ const CameraFeed = () => {
         }
     };
 
+    // Send frame to Flask backend
     const sendFrameToBackend = async (blob) => {
         const formData = new FormData();
         formData.append('file', blob, 'frame.png');
@@ -43,19 +46,25 @@ const CameraFeed = () => {
             });
 
             const data = await response.json();
+            console.log('🔮 Prediction Response:', data);
+
             if (data.prediction) {
-                setPrediction(data.prediction);  // Update the UI with the prediction
+                setPrediction(data.prediction);
+            } else {
+                setPrediction('No prediction received.');
             }
         } catch (error) {
             console.error('❌ Failed to upload frame:', error);
         }
     };
 
+    // Start frame upload
     const startUploading = () => {
         setIsUploading(true);
-        intervalRef.current = setInterval(captureFrame, 1000); // Send frame every second
+        intervalRef.current = setInterval(captureFrame, 1000); // Capture every second
     };
 
+    // Stop frame upload
     const stopUploading = () => {
         setIsUploading(false);
         clearInterval(intervalRef.current);
@@ -64,7 +73,7 @@ const CameraFeed = () => {
 
     useEffect(() => {
         startCamera();
-        return () => stopUploading();
+        return () => stopUploading(); // Cleanup
     }, []);
 
     return (
@@ -79,6 +88,7 @@ const CameraFeed = () => {
                 🎥 Live Camera Feed
             </motion.h1>
 
+            {/* Video Feed */}
             <motion.div
                 className="w-100 d-flex justify-content-center position-relative"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -135,10 +145,11 @@ const CameraFeed = () => {
                         boxShadow: '0 0 30px rgba(0, 123, 255, 0.8)',
                     }}
                 >
-                    Prediction: {prediction}
+                    🟢 Prediction: {prediction}
                 </motion.div>
             )}
 
+            {/* Start/Stop Buttons */}
             <div className="mt-4">
                 {!isUploading ? (
                     <motion.button
@@ -161,6 +172,7 @@ const CameraFeed = () => {
                 )}
             </div>
 
+            {/* Hidden Canvas for Frame Capture */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>
     );
