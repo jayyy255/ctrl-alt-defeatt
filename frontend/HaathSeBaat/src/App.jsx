@@ -9,6 +9,7 @@ import CameraFeed from './components/CameraFeed';
 import AnimatedCard from './components/animated/AnimatedCard';
 import AnimatedLogo from './components/animated/animatedLogo';
 import AnimatedTab from './components/animated/AnimatedTab';
+import LandingPage from './components/LandingPage';
 import AnimatedFormContainer from './components/animated/AnimatedFormContainer';
 import Translator from './pages/Translator';
 
@@ -55,9 +56,11 @@ function App() {
         <Router>
             <div className="app-container">
                 <Routes>
-                    <Route path="/" element={<AuthPage />} />
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/login" element={<AuthPage />} />
+                    <Route path="/signup" element={<AuthPage />} />
                     <Route path="/camera" element={<CameraFeed />} />
-                    <Route path="/Translator" element={<Translator/>} />
+                    <Route path="/translator" element={<Translator />} />
                     <Route path="*" element={<h1>404 - Page Not Found</h1>} />
                 </Routes>
             </div>
