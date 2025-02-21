@@ -14,9 +14,9 @@ function App() {
     }, []);
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
-            <h1 className="text-2xl font-bold">{message}</h1>
-            <h1>Hello world</h1>
+        <div className="container d-flex align-items-center justify-content-center min-vh-100 bg-light">
+            <h1 className="display-4 text-primary">{message}</h1>
+            <h1 className="display-4 text-primary">Hello </h1>
         </div>
     );
 }
