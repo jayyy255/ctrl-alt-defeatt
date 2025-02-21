@@ -6,6 +6,7 @@ const CameraFeed = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [prediction, setPrediction] = useState('');
     let intervalRef = useRef(null);
 
     const startCamera = async () => {
@@ -27,19 +28,24 @@ const CameraFeed = () => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const frameData = canvas.toDataURL('image/png');
-            sendFrameToBackend(frameData);
+            canvas.toBlob(sendFrameToBackend, 'image/png');
         }
     };
 
-    const sendFrameToBackend = async (pngData) => {
+    const sendFrameToBackend = async (blob) => {
+        const formData = new FormData();
+        formData.append('file', blob, 'frame.png');
+
         try {
-            await fetch('http://localhost:3000/upload-frame', {
+            const response = await fetch('http://127.0.0.1:5000/', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ frame: pngData })
+                body: formData
             });
-            console.log('✅ Frame uploaded successfully.');
+
+            const data = await response.json();
+            if (data.prediction) {
+                setPrediction(data.prediction);  // Update the UI with the prediction
+            }
         } catch (error) {
             console.error('❌ Failed to upload frame:', error);
         }
@@ -47,12 +53,13 @@ const CameraFeed = () => {
 
     const startUploading = () => {
         setIsUploading(true);
-        intervalRef.current = setInterval(captureFrame, 1000);
+        intervalRef.current = setInterval(captureFrame, 1000); // Send frame every second
     };
 
     const stopUploading = () => {
         setIsUploading(false);
         clearInterval(intervalRef.current);
+        setPrediction(''); // Clear prediction when stopped
     };
 
     useEffect(() => {
@@ -111,6 +118,26 @@ const CameraFeed = () => {
                     </div>
                 )}
             </motion.div>
+
+            {/* Prediction Display */}
+            {prediction && (
+                <motion.div
+                    className="mt-4 p-3 rounded shadow-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    style={{
+                        backgroundColor: '#ffffff',
+                        textAlign: 'center',
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        color: '#007bff',
+                        boxShadow: '0 0 30px rgba(0, 123, 255, 0.8)',
+                    }}
+                >
+                    Prediction: {prediction}
+                </motion.div>
+            )}
 
             <div className="mt-4">
                 {!isUploading ? (
