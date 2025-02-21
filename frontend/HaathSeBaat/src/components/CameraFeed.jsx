@@ -1,25 +1,27 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CameraFeed = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [prediction, setPrediction] = useState('');
+    let intervalRef = useRef(null);
 
-    useEffect(() => {
-        const startCamera = async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
-            } catch (error) {
-                console.error('Error accessing the camera:', error);
+    // Start camera stream
+    const startCamera = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
             }
-        };
-        startCamera();
-    }, []);
+        } catch (error) {
+            console.error('🚫 Error accessing the camera:', error);
+        }
+    };
 
+    // Capture frame from video
     const captureFrame = () => {
         const video = videoRef.current;
         const canvas = canvasRef.current;
@@ -28,45 +30,65 @@ const CameraFeed = () => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Convert frame to PNG
-            const frameData = canvas.toDataURL('image/png');
-
-            // Send the frame to the backend
-            sendFrameToBackend(frameData);
+            canvas.toBlob(sendFrameToBackend, 'image/png');
         }
     };
 
-    const sendFrameToBackend = async (pngData) => {
+    // Send frame to Flask backend
+    const sendFrameToBackend = async (blob) => {
+        const formData = new FormData();
+        formData.append('file', blob, 'frame.png');
+
         try {
-            await fetch('http://localhost:3000/upload-frame', {
+            const response = await fetch('http://127.0.0.1:5000/', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ frame: pngData })
+                body: formData
             });
-            console.log('Frame uploaded successfully.');
+
+            const data = await response.json();
+            console.log('🔮 Prediction Response:', data);
+
+            if (data.prediction) {
+                setPrediction(data.prediction);
+            } else {
+                setPrediction('No prediction received.');
+            }
         } catch (error) {
-            console.error('Failed to upload frame:', error);
+            console.error('❌ Failed to upload frame:', error);
         }
     };
 
-    // Capture frame every 1 second (adjust as needed)
+    // Start frame upload
+    const startUploading = () => {
+        setIsUploading(true);
+        intervalRef.current = setInterval(captureFrame, 1000); // Capture every second
+    };
+
+    // Stop frame upload
+    const stopUploading = () => {
+        setIsUploading(false);
+        clearInterval(intervalRef.current);
+        setPrediction(''); // Clear prediction when stopped
+    };
+
     useEffect(() => {
-        const interval = setInterval(captureFrame, 1000);
-        return () => clearInterval(interval);
+        startCamera();
+        return () => stopUploading(); // Cleanup
     }, []);
 
     return (
-        <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center" style={{ background: 'linear-gradient(135deg, #ff9a9e, #fad0c4)' }}>
+        <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center" style={{ background: 'linear-gradient(135deg, #6a11cb, #2575fc)' }}>
             <motion.h1
                 className="text-center mb-4 display-4 fw-bold"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
-                style={{ color: '#ffffff', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
+                style={{ color: '#fff', textShadow: '2px 2px 10px rgba(0, 0, 0, 0.3)' }}
             >
-                Live Camera Feed
+                🎥 Live Camera Feed
             </motion.h1>
+
+            {/* Video Feed */}
             <motion.div
                 className="w-100 d-flex justify-content-center position-relative"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -82,30 +104,75 @@ const CameraFeed = () => {
                         width: '100%',
                         maxWidth: '640px',
                         border: '10px solid #ffffff',
-                        boxShadow: '0 0 30px rgba(255, 105, 180, 0.8), 0 0 50px rgba(255, 105, 180, 0.5)',
-                        transform: 'perspective(1000px) rotateY(0deg)',
+                        boxShadow: '0 0 30px rgba(98, 0, 234, 0.8)',
                     }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                 />
-                {/* Overlay to simulate a "live" indicator */}
-                <div
+                {isUploading && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '20px',
+                            right: '20px',
+                            backgroundColor: '#ff6f61',
+                            color: '#fff',
+                            padding: '5px 10px',
+                            borderRadius: '5px',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            boxShadow: '0 0 15px rgba(255, 111, 97, 0.8)',
+                        }}
+                    >
+                        Uploading...
+                    </div>
+                )}
+            </motion.div>
+
+            {/* Prediction Display */}
+            {prediction && (
+                <motion.div
+                    className="mt-4 p-3 rounded shadow-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
                     style={{
-                        position: 'absolute',
-                        top: '20px',
-                        right: '20px',
-                        backgroundColor: '#ff6f61',
-                        color: '#ffffff',
-                        padding: '5px 10px',
-                        borderRadius: '5px',
-                        fontSize: '14px',
+                        backgroundColor: '#ffffff',
+                        textAlign: 'center',
+                        fontSize: '2rem',
                         fontWeight: 'bold',
-                        boxShadow: '0 0 15px rgba(255, 111, 97, 0.8)',
+                        color: '#007bff',
+                        boxShadow: '0 0 30px rgba(0, 123, 255, 0.8)',
                     }}
                 >
-                    LIVE
-                </div>
-            </motion.div>
+                    🟢 Prediction: {prediction}
+                </motion.div>
+            )}
+
+            {/* Start/Stop Buttons */}
+            <div className="mt-4">
+                {!isUploading ? (
+                    <motion.button
+                        className="btn btn-success me-2"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={startUploading}
+                    >
+                        🚀 Start Uploading
+                    </motion.button>
+                ) : (
+                    <motion.button
+                        className="btn btn-danger"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={stopUploading}
+                    >
+                        🛑 Stop Uploading
+                    </motion.button>
+                )}
+            </div>
+
+            {/* Hidden Canvas for Frame Capture */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>
     );
