@@ -1,4 +1,4 @@
-// import React from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 
@@ -6,13 +6,12 @@ function LandingPage() {
   return (
     <div className="container">
       <div className="content">
-        <h1 className="title">Sign Party</h1>
+        <h1 className="title">Haath Se Baat</h1>
         <p className="description">
-          A playful way to make new friends, learn about another culture and gain new opportunities by <strong>learning American Sign Language together.</strong>
+          A playful way to make new friends, learn about another culture and gain new opportunities by <strong>learning Indian Sign Language together.</strong>
         </p>
         <div className="buttons">
-          <button className="signup">Sign Up</button>
-          <button className="login">Login</button>
+          <button className="getstarted">Get Started!</button>
         </div>
       </div>
       
