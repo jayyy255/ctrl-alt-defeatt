@@ -39,13 +39,6 @@ function AuthPage() {
                 <AnimatedFormContainer activeTab={activeTab} tabKey={activeTab}>
                     {activeTab === 'login' ? <LoginForm /> : <SignupForm />}
                 </AnimatedFormContainer>
-
-                {/* Navigation Link to Camera Page */}
-                <div className="mt-4">
-                    <Link to="/camera" className="btn btn-outline-primary">
-                        📸 Go to Live Camera Feed
-                    </Link>
-                </div>
             </AnimatedCard>
         </div>
     );
