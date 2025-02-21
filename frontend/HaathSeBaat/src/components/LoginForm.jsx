@@ -6,12 +6,14 @@ import AnimatedAlert from './animated/animatedAlert';
 import AnimatedFormGroup from './animated/AnimatedFormGroup';
 import AnimatedButton from './animated/AnimatedButton';
 import AnimatedFormFields from './animated/AnimatedFormFields';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const navigate = useNavigate() ;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -91,6 +93,7 @@ const LoginForm = () => {
             type="submit" 
             className="w-100 login-btn"
             loading={loading}
+            path='/translator'
           >
             Login
           </AnimatedButton>

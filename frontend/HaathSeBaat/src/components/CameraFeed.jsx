@@ -50,24 +50,25 @@ const CameraFeed = () => {
         }
     };
 
-    // Capture frame every 2 seconds (adjust as needed)
+    // Capture frame every 1 second (adjust as needed)
     useEffect(() => {
         const interval = setInterval(captureFrame, 1000);
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+        <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center" style={{ background: 'linear-gradient(135deg, #ff9a9e, #fad0c4)' }}>
             <motion.h1
-                className="text-center mb-4"
+                className="text-center mb-4 display-4 fw-bold"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
+                style={{ color: '#ffffff', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
             >
                 Live Camera Feed
             </motion.h1>
             <motion.div
-                className="w-100 d-flex justify-content-center"
+                className="w-100 d-flex justify-content-center position-relative"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.5 }}
@@ -77,10 +78,33 @@ const CameraFeed = () => {
                     autoPlay
                     playsInline
                     className="rounded shadow-lg"
-                    style={{ width: '100%', maxWidth: '640px' }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    style={{
+                        width: '100%',
+                        maxWidth: '640px',
+                        border: '10px solid #ffffff',
+                        boxShadow: '0 0 30px rgba(255, 105, 180, 0.8), 0 0 50px rgba(255, 105, 180, 0.5)',
+                        transform: 'perspective(1000px) rotateY(0deg)',
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                 />
+                {/* Overlay to simulate a "live" indicator */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '20px',
+                        right: '20px',
+                        backgroundColor: '#ff6f61',
+                        color: '#ffffff',
+                        padding: '5px 10px',
+                        borderRadius: '5px',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        boxShadow: '0 0 15px rgba(255, 111, 97, 0.8)',
+                    }}
+                >
+                    LIVE
+                </div>
             </motion.div>
             <canvas ref={canvasRef} style={{ display: 'none' }} />
         </div>

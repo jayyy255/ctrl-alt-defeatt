@@ -1,12 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const AnimatedButton = ({ 
   children, 
   loading = false, 
   variant = "primary", 
   className = '', 
+  path = "*" ,
   ...props 
 }) => {
   const itemVariants = {
@@ -18,6 +20,7 @@ const AnimatedButton = ({
     }
   };
 
+  const navigate = useNavigate() 
   const LoadingSpinner = () => (
     <motion.span
       animate={{ rotate: 360 }}
@@ -38,6 +41,7 @@ const AnimatedButton = ({
         variant={variant} 
         className={className}
         disabled={loading}
+        onClick={() => navigate(path)}
         {...props}
       >
         {loading ? <LoadingSpinner /> : children}
