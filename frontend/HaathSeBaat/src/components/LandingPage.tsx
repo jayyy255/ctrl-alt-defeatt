@@ -1,8 +1,9 @@
-// import React from "react";
+import React from "react";
 import { motion } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+  const navigate = useNavigate() ;
   return (
     <div className="container">
       <div className="content">
@@ -11,8 +12,7 @@ function LandingPage() {
           A playful way to make new friends, learn about another culture and gain new opportunities by <strong>learning American Sign Language together.</strong>
         </p>
         <div className="buttons">
-          <button className="signup">Sign Up</button>
-          <button className="login">Login</button>
+          <button className="signup" onClick={() => navigate("/login")}>Get Started</button>
         </div>
       </div>
       
