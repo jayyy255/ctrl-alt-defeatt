@@ -1,6 +1,5 @@
-// src/components/SignupForm.jsx
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Container, Row, Col, Alert } from 'react-bootstrap';
 import AnimatedHeading from './animated/AnimatedHeading';
 import AnimatedAlert from './animated/animatedAlert';
 import AnimatedFormGroup from './animated/AnimatedFormGroup';
@@ -66,33 +65,74 @@ const SignupForm = () => {
   ];
 
   return (
-    <div className="form-container">
-      <AnimatedHeading>Create Account</AnimatedHeading>
+    <Container fluid className="d-flex justify-content-center align-items-center vh-100" 
+               style={{ backgroundColor: '#8860D0', backgroundImage: 'url(/images/dots-pattern.svg)', backgroundSize: 'cover' }}>
+      <Row className="w-100">
+        <Col xs={12} lg={10} xl={8} className="mx-auto">
+          <div className="p-5 rounded shadow" 
+               style={{ 
+                 minWidth: '90%', 
+                 background: 'rgba(255, 255, 255, 0.9)',
+                 borderRadius: '20px',
+                 border: '5px solid #5AB9EA'
+               }}>
+            <div className="text-center mb-4">
+              <AnimatedHeading className="display-4 fw-bold" 
+                               style={{ color: '#5680E9', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                Start Your Sign Language Adventure
+              </AnimatedHeading>
+              <p className="lead text-secondary mb-4">Join our community of ASL learners today!</p>
+            </div>
 
-      {error && <AnimatedAlert show variant="danger">{error}</AnimatedAlert>}
-      {success && <AnimatedAlert show variant="success">{success}</AnimatedAlert>}
+            {error && <AnimatedAlert show variant="danger" className="rounded-pill text-center">{error}</AnimatedAlert>}
+            {success && <AnimatedAlert show variant="success" className="rounded-pill text-center">{success}</AnimatedAlert>}
 
-      <Form onSubmit={handleSubmit}>
-        <AnimatedFormFields>
-          {formControls.map((control, index) => (
-            <AnimatedFormGroup
-              key={index}
-              custom={index}
-              label={control.label}
-              type={control.type}
-              name={control.name}
-              placeholder={control.placeholder}
-              value={formData[control.name]}
-              onChange={handleChange}
-            />
-          ))}
+            <Form onSubmit={handleSubmit} className="p-4">
+              <AnimatedFormFields>
+                <Row>
+                  {formControls.map((control, index) => (
+                    <Col md={index < 2 ? 6 : 6} key={index}>
+                      <AnimatedFormGroup
+                        custom={index}
+                        label={control.label}
+                        type={control.type}
+                        name={control.name}
+                        placeholder={control.placeholder}
+                        value={formData[control.name]}
+                        onChange={handleChange}
+                        labelClassName="fw-bold text-primary"
+                        inputClassName="form-control-lg border border-2 rounded-pill"
+                        style={{ marginBottom: '25px' }}
+                      />
+                    </Col>
+                  ))}
+                </Row>
 
-          <AnimatedButton type="submit" className="w-100 signup-btn" loading={loading}>
-            {loading ? 'Signing Up...' : 'Sign Up'}
-          </AnimatedButton>
-        </AnimatedFormFields>
-      </Form>
-    </div>
+                <AnimatedButton 
+                  type="submit" 
+                  className="w-100 py-3 mt-4 rounded-pill fw-bold" 
+                  loading={loading}
+                  path = "/translator"
+                  style={{ 
+                    backgroundColor: '#F8E16C', 
+                    color: '#5680E9',
+                    fontSize: '1.2rem',
+                    border: 'none',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  {loading ? 'Creating Your Account...' : 'Create Your Account'}
+                </AnimatedButton>
+              </AnimatedFormFields>
+              
+              <div className="text-center mt-4">
+                <p className="mb-0 text-secondary">Already a member? <a href="/login" className="text-primary fw-bold">Sign in to play</a></p>
+              </div>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
