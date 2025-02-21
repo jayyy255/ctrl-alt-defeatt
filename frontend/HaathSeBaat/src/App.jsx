@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchMessage } from './api';
+import { fetchMessage } from '../api';
 
 function App() {
     const [message, setMessage] = useState('');
@@ -15,7 +15,8 @@ function App() {
 
     return (
         <div className="flex items-center justify-center h-screen bg-gray-100">
-            <h1 className="text-2xl font-bold text-blue-600">{message}</h1>
+            <h1 className="text-2xl font-bold">{message}</h1>
+            <h1>Hello world</h1>
         </div>
     );
 }
