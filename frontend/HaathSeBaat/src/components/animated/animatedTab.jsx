@@ -4,17 +4,17 @@ import { motion } from 'framer-motion';
 const AnimatedTab = ({ isActive, onClick, children }) => {
   const tabVariants = {
     active: {
-      color: '#5680E9',
-      backgroundColor: '#F8E16C',
+      color: '#fff',
+      backgroundColor: '#e74c3c',
       opacity: 1,
       scale: 1.05,
       y: 0,
-      boxShadow: '0 4px 0 #D4B93E',
+      boxShadow: '0 4px 0 #6b46c1',
       transition: { duration: 0.3, type: "spring" }
     },
     inactive: {
-      color: '#5680E9',
-      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+      color: '#6b46c1',
+      backgroundColor: '#ffc107',
       opacity: 0.8,
       scale: 1,
       y: 2,
@@ -32,12 +32,12 @@ const AnimatedTab = ({ isActive, onClick, children }) => {
       whileHover={{ 
         scale: 1.05, 
         y: -2,
-        boxShadow: '0 6px 0 #D4B93E'
+        boxShadow: '0 6px 0 #6b46c1'
       }}
       whileTap={{ 
         scale: 0.95, 
         y: 4,
-        boxShadow: '0 2px 0 #D4B93E'
+        boxShadow: '0 2px 0 #6b46c1'
       }}
       style={{
         border: 'none',
@@ -51,7 +51,6 @@ const AnimatedTab = ({ isActive, onClick, children }) => {
         overflow: 'hidden'
       }}
     >
-      {/* Decorative gleam effect */}
       {isActive && (
         <motion.div
           style={{

@@ -1,3 +1,4 @@
+// AnimatedButton.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
@@ -23,7 +24,6 @@ const AnimatedButton = ({
 
   const navigate = useNavigate();
   
-  // Game-themed loading spinner
   const LoadingSpinner = () => (
     <motion.div
       style={{ 
@@ -58,11 +58,11 @@ const AnimatedButton = ({
   );
 
   const defaultStyle = {
-    backgroundColor: '#F8E16C',
-    color: '#5680E9',
+    backgroundColor: '#e74c3c',
+    color: '#fff',
     fontWeight: 'bold',
     border: 'none',
-    boxShadow: '0 4px 0 #D4B93E', 
+    boxShadow: '0 4px 0 #6b46c1', 
     position: 'relative',
     top: 0,
     ...style

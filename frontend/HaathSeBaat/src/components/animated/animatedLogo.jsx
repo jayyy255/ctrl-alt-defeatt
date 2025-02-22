@@ -43,18 +43,17 @@ const AnimatedLogo = ({ text = "HaathSeBaat" }) => {
         className="logo"
         animate={floatAnimation}
         style={{
-          background: '#5680E9',
-          color: '#F8E16C',
+          background: '#6b46c1',
+          color: '#ffc107',
           padding: '15px 30px',
           borderRadius: '30px',
-          boxShadow: '0 6px 0 #3A5BBF, 0 8px 20px rgba(0,0,0,0.2)',
+          boxShadow: '0 6px 0 #e74c3c, 0 8px 20px rgba(0,0,0,0.2)',
           fontWeight: 'bold',
           fontSize: '2rem',
           position: 'relative',
           display: 'inline-block'
         }}
       >
-        {/* Decorative elements */}
         <div style={{
           position: 'absolute',
           top: '0',
@@ -65,15 +64,15 @@ const AnimatedLogo = ({ text = "HaathSeBaat" }) => {
           borderRadius: '5px'
         }} />
         
-        <span style={{ textShadow: '2px 2px 0 #3A5BBF' }}>{text}</span>
+        <span style={{ textShadow: '2px 2px 0 #e74c3c' }}>{text}</span>
         
         <motion.div
           style={{
             position: 'absolute',
             top: '-10px',
             right: '-10px',
-            backgroundColor: '#F8E16C',
-            color: '#5680E9',
+            backgroundColor: '#ffc107',
+            color: '#6b46c1',
             borderRadius: '50%',
             width: '30px',
             height: '30px',

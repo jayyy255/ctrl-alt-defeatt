@@ -12,6 +12,8 @@ import AnimatedTab from './components/animated/AnimatedTab';
 import LandingPage from './components/LandingPage';
 import AnimatedFormContainer from './components/animated/AnimatedFormContainer';
 import Translator from './pages/Translator';
+import AboutUs from './components/AboutUs';
+import SpeechToText from './components/SpeechToText';
 
 function AuthPage() {
     const [activeTab, setActiveTab] = useState('login');
@@ -55,6 +57,9 @@ function App() {
                     <Route path="/camera" element={<CameraFeed />} />
                     <Route path="/translator" element={<Translator />} />
                     <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+                    <Route path="/" element={<h1>Home Page</h1>} />
+                    <Route path="/about" element={<AboutUs />} />
+                    <Route path="/stt" element={<SpeechToText/>} />
                 </Routes>
             </div>
         </Router>

@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 
 const AnimatedCard = ({ children, className, style = {}, ...props }) => {
   const defaultStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#ffc107',
     borderRadius: '20px',
-    border: '5px solid #5AB9EA',
+    border: '5px solid #e74c3c',
     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
     padding: '25px',
     overflow: 'hidden',
@@ -13,7 +13,6 @@ const AnimatedCard = ({ children, className, style = {}, ...props }) => {
     ...style
   };
 
-  // Game-themed decorative elements
   const Decorations = () => (
     <>
       <div style={{
@@ -23,7 +22,7 @@ const AnimatedCard = ({ children, className, style = {}, ...props }) => {
         width: '120px',
         height: '120px',
         borderRadius: '50%',
-        background: 'rgba(248, 225, 108, 0.2)',
+        background: 'rgba(230, 76, 60, 0.2)',
         zIndex: 0
       }} />
       <div style={{
@@ -33,7 +32,7 @@ const AnimatedCard = ({ children, className, style = {}, ...props }) => {
         width: '150px',
         height: '150px',
         borderRadius: '50%',
-        background: 'rgba(86, 128, 233, 0.1)',
+        background: 'rgba(107, 70, 193, 0.1)',
         zIndex: 0
       }} />
     </>

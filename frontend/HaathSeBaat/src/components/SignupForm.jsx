@@ -66,26 +66,26 @@ const SignupForm = () => {
 
   return (
     <Container fluid className="d-flex justify-content-center align-items-center vh-100" 
-               style={{ backgroundColor: '#8860D0', backgroundImage: 'url(/images/dots-pattern.svg)', backgroundSize: 'cover' }}>
+               style={{ backgroundColor: '#6b46c1', backgroundImage: 'url(/images/dots-pattern.svg)', backgroundSize: 'cover' }}>
       <Row className="w-100">
         <Col xs={12} lg={10} xl={8} className="mx-auto">
           <div className="p-5 rounded shadow" 
                style={{ 
                  minWidth: '90%', 
-                 background: 'rgba(255, 255, 255, 0.9)',
+                 background: '#ffc107',
                  borderRadius: '20px',
-                 border: '5px solid #5AB9EA'
+                 border: '5px solid #e74c3c'
                }}>
             <div className="text-center mb-4">
               <AnimatedHeading className="display-4 fw-bold" 
-                               style={{ color: '#5680E9', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                               style={{ color: '#6b46c1', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
                 Start Your Sign Language Adventure
               </AnimatedHeading>
-              <p className="lead text-secondary mb-4">Join our community of ASL learners today!</p>
+              <p className="lead mb-4" style={{ color: '#e74c3c' }}>Join our community of ASL learners today!</p>
             </div>
 
-            {error && <AnimatedAlert show variant="danger" className="rounded-pill text-center">{error}</AnimatedAlert>}
-            {success && <AnimatedAlert show variant="success" className="rounded-pill text-center">{success}</AnimatedAlert>}
+            {error && <AnimatedAlert show variant="danger" className="rounded-pill text-center" style={{ backgroundColor: '#e54e49' }}>{error}</AnimatedAlert>}
+            {success && <AnimatedAlert show variant="success" className="rounded-pill text-center" style={{ backgroundColor: '#198754' }}>{success}</AnimatedAlert>}
 
             <Form onSubmit={handleSubmit} className="p-4">
               <AnimatedFormFields>
@@ -100,9 +100,9 @@ const SignupForm = () => {
                         placeholder={control.placeholder}
                         value={formData[control.name]}
                         onChange={handleChange}
-                        labelClassName="fw-bold text-primary"
+                        labelClassName="fw-bold"
                         inputClassName="form-control-lg border border-2 rounded-pill"
-                        style={{ marginBottom: '25px' }}
+                        style={{ marginBottom: '25px', color: '#6b46c1' }}
                       />
                     </Col>
                   ))}
@@ -114,8 +114,8 @@ const SignupForm = () => {
                   loading={loading}
                   path = "/translator"
                   style={{ 
-                    backgroundColor: '#F8E16C', 
-                    color: '#5680E9',
+                    backgroundColor: '#e74c3c', 
+                    color: '#fff',
                     fontSize: '1.2rem',
                     border: 'none',
                     boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
@@ -126,7 +126,7 @@ const SignupForm = () => {
               </AnimatedFormFields>
               
               <div className="text-center mt-4">
-                <p className="mb-0 text-secondary">Already a member? <a href="/login" className="text-primary fw-bold">Sign in to play</a></p>
+                <p className="mb-0" style={{ color: '#6b46c1' }}>Already a member? <a href="/login" style={{ color: '#e74c3c' }} className="fw-bold">Sign in to play</a></p>
               </div>
             </Form>
           </div>

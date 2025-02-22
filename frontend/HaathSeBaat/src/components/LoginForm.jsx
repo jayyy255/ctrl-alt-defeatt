@@ -54,23 +54,23 @@ const LoginForm = () => {
 
   return (
     <Container fluid className="d-flex justify-content-center rounded shadow align-items-center vh-100" 
-               style={{ backgroundColor: '#8860D0', backgroundSize: 'cover' }}>
+               style={{ backgroundColor: '#6b46c1', backgroundSize: 'cover' }}>
       <div style={{ width: '75%', maxHeight: '450px' }} className="mx-auto">
         <div className="rounded shadow d-flex" 
              style={{ 
-               background: 'rgba(255, 255, 255, 0.9)',
+               background: '#ffc107',
                borderRadius: '20px',
-               border: '5px solid #5AB9EA',
+               border: '3px solid #e74c3c',
                overflow: 'hidden'
              }}>
           {/* Left side - Image/Branding */}
-          <div className="d-none d-md-block" style={{ width: '40%', backgroundColor: '#5680E9', padding: '20px' }}>
+          <div className="d-none d-md-block" style={{ width: '40%', backgroundColor: '#6b46c1', padding: '20px' }}>
             <div className="h-100 d-flex flex-column justify-content-center align-items-center text-white">
               <h2 className="display-5 fw-bold mb-4">Level Up Your Sign Language</h2>
               <div style={{ 
                 width: '100px', 
                 height: '100px', 
-                backgroundColor: '#F8E16C', 
+                backgroundColor: '#fff', 
                 borderRadius: '50%',
                 display: 'flex',
                 justifyContent: 'center',
@@ -86,19 +86,19 @@ const LoginForm = () => {
           {/* Right side - Login Form */}
           <div style={{ width: '60%', padding: '30px' }}>
             <AnimatedHeading className="h3 fw-bold mb-4" 
-                            style={{ color: '#5680E9' }}>
+                            style={{ color: '#6b46c1' }}>
               Welcome Back
             </AnimatedHeading>
 
-            {error && <Alert variant="danger" className="py-2">{error}</Alert>}
-            {success && <Alert variant="success" className="py-2">{success}</Alert>}
+            {error && <Alert variant="danger" style={{ backgroundColor: '#e54e49', color: 'white' }} className="py-2">{error}</Alert>}
+            {success && <Alert variant="success" style={{ backgroundColor: '#198754', color: 'white' }} className="py-2">{success}</Alert>}
 
             <Form onSubmit={handleSubmit}>
               <AnimatedFormFields>
                 <Row>
                   <Col xs={12} className="mb-3">
                     <Form.Group>
-                      <Form.Label className="fw-bold text-primary">Email address</Form.Label>
+                      <Form.Label className="fw-bold" style={{ color: '#6b46c1' }}>Email address</Form.Label>
                       <Form.Control
                         type="email"
                         name="email"
@@ -112,7 +112,7 @@ const LoginForm = () => {
                   
                   <Col xs={12} className="mb-4">
                     <Form.Group>
-                      <Form.Label className="fw-bold text-primary">Password</Form.Label>
+                      <Form.Label className="fw-bold" style={{ color: '#6b46c1' }}>Password</Form.Label>
                       <Form.Control
                         type="password"
                         name="password"
@@ -122,7 +122,7 @@ const LoginForm = () => {
                         className="border border-2 rounded-pill"
                       />
                       <div className="d-flex justify-content-end mt-1">
-                        <a href="/forgot-password" className="text-secondary small">Forgot password?</a>
+                        <a href="/forgot-password" style={{ color: '#e74c3c' }} className="small">Forgot password?</a>
                       </div>
                     </Form.Group>
                   </Col>
@@ -132,10 +132,10 @@ const LoginForm = () => {
                   type="submit"
                   className="w-100 py-2 rounded-pill fw-bold"
                   loading={loading}
-                  path='/translator'
+                  path='/stt'
                   style={{ 
-                    backgroundColor: '#F8E16C', 
-                    color: '#5680E9',
+                    backgroundColor: '#e74c3c', 
+                    color: '#fff',
                     border: 'none',
                     boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
                   }}
@@ -145,7 +145,7 @@ const LoginForm = () => {
               </AnimatedFormFields>
               
               <div className="text-center mt-3">
-                <p className="mb-0 text-secondary small">Don't have an account? <a href="/signup" className="text-primary fw-bold">Join the fun!</a></p>
+                <p className="mb-0" style={{ color: '#6b46c1' }}>Don't have an account? <a href="/signup" style={{ color: '#e74c3c' }} className="fw-bold">Join the fun!</a></p>
               </div>
             </Form>
           </div>

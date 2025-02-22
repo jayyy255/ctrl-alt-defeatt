@@ -1,8 +1,8 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { check, validationResult } = require('express-validator');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js'; // Add .js extension
+import { check, validationResult } from 'express-validator';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'mysecrettoken';
@@ -56,4 +56,4 @@ router.post('/login', [
   }
 });
 
-module.exports = router;
+export default router;

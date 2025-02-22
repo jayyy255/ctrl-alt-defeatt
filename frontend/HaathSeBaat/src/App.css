@@ -8,7 +8,12 @@
   --card-background: #ffffff;
   --border-color: #e9ecef;
 }
-
+.hero {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--background-color);
@@ -168,4 +173,33 @@ body {
   .form-container h2 {
     font-size: 20px;
   }
+}
+
+.getstarted-button {
+  background-color: #6B46C1; /* Purple color */
+  color: white;
+  padding: 10px 30px;
+  border-radius: 9999px; /* Fully rounded edges */
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.getstarted-button:hover {
+  background-color: #553C9A; /* Slightly darker purple on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.getstarted-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sign-of-the-day {
+  position: relative;
+  top: 50px;
 }

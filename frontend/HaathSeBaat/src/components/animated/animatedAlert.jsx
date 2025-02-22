@@ -17,11 +17,11 @@ const AnimatedAlert = ({ show, variant, children, ...props }) => {
             variant={variant} 
             className="rounded-pill border-3 shadow-sm"
             style={{
-              background: variant === 'danger' ? 'rgba(255, 102, 102, 0.9)' : 'rgba(119, 221, 119, 0.9)',
+              background: variant === 'danger' ? '#e54e49' : '#198754',
               color: '#fff',
               fontWeight: 'bold',
               textAlign: 'center',
-              borderColor: variant === 'danger' ? '#ff5555' : '#5cb85c'
+              borderColor: variant === 'danger' ? '#e74c3c' : '#198754'
             }}
           >
             {variant === 'danger' ? '❌ ' : '✅ '}{children}
