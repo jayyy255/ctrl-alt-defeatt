@@ -7,7 +7,11 @@ from flask_socketio import SocketIO, emit
 
 # Initialize Flask app and SocketIO
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Allow connections from React frontend (localhost:3000 or the correct port)
+# Example with React running on port 5271
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:5271", "http://127.0.0.1:5271"])
+
 
 # Load the trained model
 try:
@@ -67,11 +71,20 @@ def handle_video_frame(data):
                     predicted_character = labels_dict.get(int(prediction[0]), "Unknown")
                     char_arr.append(predicted_character)
 
-        # Emit prediction result
+        # Emit prediction result to the frontend
         emit('prediction', {'prediction': predicted_character, 'confidence': round(confidence, 2)})
 
     except Exception as e:
         print(f"🚫 Error processing frame: {e}")
+
+# Handle SocketIO connection and disconnection events
+@socketio.on('connect')
+def handle_connect():
+    print("✅ Client connected")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print("❌ Client disconnected")
 
 # Run the app
 if __name__ == '__main__':
