@@ -1,8 +1,8 @@
-    import React from 'react';
-    import { motion } from 'framer-motion';
-    import CameraFeed from '../components/CameraFeed';
-    import { Link } from 'react-router-dom';
-    import { Button } from 'react-bootstrap';
+import React from 'react';
+import { motion } from 'framer-motion';
+import CameraFeed from '../components/CameraFeed';
+import { Link } from 'react-router-dom';
+import BackButton from '../components/BackButon';
 
     const Translator = () => {
     // Define the animation variants for Framer Motion
@@ -80,141 +80,33 @@
         },
     ];
 
-    return (
-        <div className="container my-5">
-        <div className="row">
-            {/* First Row (3 columns) */}
-            <div className="row mb-4">
-            {cards.slice(0, 3).map((card) => (
-                <div key={card.id} className="col-md-4">
-                <motion.div
-                    className="card"
-                    initial="offscreen"
-                    whileInView="onscreen"
-                    viewport={{ once: true, amount: 0.8 }}
-                    variants={cardVariants}
-                    style={{ position: 'relative', overflow: 'hidden' }}
-                >
-                    {/* Image */}
-                    <img src={card.image} className="card-img-top" alt={card.title} />
-
-                    {/* Overlay on hover */}
-                    <motion.div
-                    className="overlay"
-                    initial="hidden"
-                    whileHover="visible"
-                    variants={overlayVariants}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: 'white',
-                        textAlign: 'center',
-                    }}
-                    >
-                    {/* Title and Description */}
-                    <motion.h5
-                        className="card-title"
-                        initial={{ y: -20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        {card.title}
-                    </motion.h5>
-                    <motion.p
-                        className="card-text"
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                    >
-                        {card.description}
-                    </motion.p>
-
-                    {/* Button */}
-                    <motion.div variants={buttonVariants}>
-                        <Button>Try Now</Button>
-                    </motion.div>
-                    </motion.div>
-                </motion.div>
-                </div>
-            ))}
-            </div>
-
-            {/* Second Row (3 columns) */}
-            <div className="row">
-            {cards.slice(3, 6).map((card) => (
-                <div key={card.id} className="col-md-4">
-                <motion.div
-                    className="card"
-                    initial="offscreen"
-                    whileInView="onscreen"
-                    viewport={{ once: true, amount: 0.8 }}
-                    variants={cardVariants}
-                    style={{ position: 'relative', overflow: 'hidden' }}
-                >
-                    {/* Image */}
-                    <img src={card.image} className="card-img-top" alt={card.title} />
-
-                    {/* Overlay on hover */}
-                    <motion.div
-                    className="overlay"
-                    initial="hidden"
-                    whileHover="visible"
-                    variants={overlayVariants}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: 'white',
-                        textAlign: 'center',
-                    }}
-                    >
-                    {/* Title and Description */}
-                    <motion.h5
-                        className="card-title"
-                        initial={{ y: -20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        {card.title}
-                    </motion.h5>
-                    <motion.p
-                        className="card-text"
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                    >
-                        {card.description}
-                    </motion.p>
-
-                    {/* Button */}
-                    <motion.div variants={buttonVariants}>
-                        <Link to="#" className="btn btn-primary">
-                        {card.cta}
-                        </Link>
-                    </motion.div>
-                    </motion.div>
-                </motion.div>
-                </div>
-            ))}
-            </div>
-        </div>
-        </div>
-    );
-    };
+  return (
+    <div className="container my-5">
+      <BackButton/>
+      <div className="row">
+        {cards.map((card) => (
+          <div key={card.id} className="col-md-4 mb-4">
+            <motion.div
+              className="card"
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true, amount: 0.8 }}
+              variants={cardVariants}
+            >
+              <img src={card.image} className="card-img-top" alt={card.title} />
+              <div className="card-body">
+                <h5 className="card-title">{card.title}</h5>
+                <p className="card-text">{card.description}</p>
+                <Link to="#" className="btn btn-primary">
+                  {card.cta}
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
     export default Translator;
