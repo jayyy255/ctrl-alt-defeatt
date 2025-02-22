@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import CameraFeed from '../components/CameraFeed';
 import { Link } from 'react-router-dom';
+import BackButton from '../components/BackButon';
 
 const Translator = () => {
   // Define the animation variants for Framer Motion
@@ -69,6 +70,7 @@ const Translator = () => {
 
   return (
     <div className="container my-5">
+      <BackButton/>
       <div className="row">
         {cards.map((card) => (
           <div key={card.id} className="col-md-4 mb-4">
