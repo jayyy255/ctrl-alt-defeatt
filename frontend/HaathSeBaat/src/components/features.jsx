@@ -1,5 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
+
 
 const featuresList = [
   {
@@ -25,11 +27,12 @@ const featuresList = [
 ]
 
 const Features = () => {
+  const navigate = useNavigate() ;
   return (
     <div className="bg-light py-5" id="features">
       <div className="container">
         <h2 className="text-center mb-5 fw-bold text-success">Our Features</h2>
-        <div className="row">
+        <div className="row" style={{ justifyContent: "flex-start", marginLeft: "auto", marginRight: "auto", maxWidth: "90%" }}>
           {featuresList.map((feature, index) => (
             <motion.div
               key={index}
@@ -45,13 +48,30 @@ const Features = () => {
                   <p className="card-text">{feature.description}</p>
                 </div>
               </div>
+              <div>
+              </div>
             </motion.div>
           ))}
+            <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="col-12 d-flex justify-content-center mt-4"
+          >
+            <button
+              onClick={() => navigate("/translator")}
+              className="btn btn-success btn-lg w-50 fw-bold text-white shadow-sm"
+            >
+              Learn More
+            </button>
+          </motion.div>
         </div>
       </div>
     </div>
   )
 }
+
+
 
 export default Features
 

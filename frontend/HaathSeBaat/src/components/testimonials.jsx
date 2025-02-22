@@ -1,5 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
+import AnimatedLogo from './animated/animatedLogo';
 
 const testimonials = [
   {
@@ -24,8 +25,9 @@ const Testimonials = () => {
   return (
     <div className="bg-success text-white py-5" id="testimonials">
       <div className="container">
-        <h2 className="text-center mb-5 fw-bold">What Our Users Say</h2>
-        <div className="row">
+      
+        <h2 className="text-center mb-5 fw-bold" >What Our Users Say</h2>
+        <div className="row" style={{ justifyContent: "flex-start", marginLeft: "auto", marginRight: "auto", maxWidth: "90%" }}>
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
@@ -34,11 +36,16 @@ const Testimonials = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="col-md-4 mb-4"
             >
-              <div className="card h-100 bg-light text-dark">
+              <div className="card h-100 text-dark"
+                style={{
+                  background: "linear-gradient(to bottom, #B8E994, #66D3FA)",
+                  border: "none",
+                  borderRadius: "15px",
+                }}>
                 <div className="card-body">
-                  <p className="card-text">{testimonial.content}</p>
-                  <h5 className="card-title mb-0">{testimonial.name}</h5>
-                  <p className="card-subtitle text-muted">{testimonial.role}</p>
+                  <p className="card-text ">{testimonial.content}</p>
+                  <h5 className="card-title ">{testimonial.name}</h5>
+                  <p className="card-subtitle text-muted mt-1 text-white">{testimonial.role}</p>
                 </div>
               </div>
             </motion.div>

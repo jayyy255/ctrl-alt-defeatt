@@ -1,5 +1,6 @@
 "use client"
-
+import React from "react"
+import PropTypes from "prop-types"
 import CallToAction from "./CallToAction"
 import Features from "./features"
 import Footer from "./footer"
@@ -7,6 +8,7 @@ import HeroSection from "./Hero-Section"
 import Navbar from "./Navbar"
 import SignOfTheDay from "./SignOfDay"
 import Testimonials from "./testimonials"
+import AboutUs from "./AboutUs"
 
 // import Navbar from "@/components/navbar"
 // import HeroSection from "@/components/hero-section"
