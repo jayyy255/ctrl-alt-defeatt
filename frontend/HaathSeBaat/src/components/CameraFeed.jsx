@@ -5,9 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const CameraFeed = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const [isUploading, setIsUploading] = useState(false);
+    const [isStreaming, setIsStreaming] = useState(false);
     const [prediction, setPrediction] = useState('');
-    let intervalRef = useRef(null);
+    const wsRef = useRef(null);
 
     // Start camera stream
     const startCamera = async () => {
@@ -21,59 +21,69 @@ const CameraFeed = () => {
         }
     };
 
-    // Capture frame from video
-    const captureFrame = () => {
+    // Start WebSocket connection
+    const startStreaming = () => {
+        if (!wsRef.current) {
+            wsRef.current = new WebSocket('ws://127.0.0.1:5000/ws');
+
+            wsRef.current.onopen = () => {
+                console.log('✅ WebSocket connected.');
+                setIsStreaming(true);
+                captureAndSendFrame();
+            };
+
+            wsRef.current.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.prediction) {
+                    setPrediction(data.prediction);
+                }
+            };
+
+            wsRef.current.onerror = (error) => {
+                console.error('❌ WebSocket error:', error);
+            };
+
+            wsRef.current.onclose = () => {
+                console.log('🔒 WebSocket closed.');
+                setIsStreaming(false);
+            };
+        }
+    };
+
+    // Capture and send frame
+    const captureAndSendFrame = () => {
         const video = videoRef.current;
         const canvas = canvasRef.current;
-        if (video && canvas) {
+        if (video && canvas && wsRef.current?.readyState === WebSocket.OPEN) {
             const context = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob(sendFrameToBackend, 'image/png');
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    blob.arrayBuffer().then((buffer) => {
+                        wsRef.current.send(buffer);
+                    });
+                }
+            }, 'image/jpeg');
+
+            requestAnimationFrame(captureAndSendFrame);
         }
     };
 
-    // Send frame to Flask backend
-    const sendFrameToBackend = async (blob) => {
-        const formData = new FormData();
-        formData.append('file', blob, 'frame.png');
-
-        try {
-            const response = await fetch('http://127.0.0.1:5000/', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-            console.log('🔮 Prediction Response:', data);
-
-            if (data.prediction) {
-                setPrediction(data.prediction);
-            } else {
-                setPrediction('No prediction received.');
-            }
-        } catch (error) {
-            console.error('❌ Failed to upload frame:', error);
+    // Stop WebSocket streaming
+    const stopStreaming = () => {
+        if (wsRef.current) {
+            wsRef.current.close();
+            wsRef.current = null;
         }
-    };
-
-    // Start frame upload
-    const startUploading = () => {
-        setIsUploading(true);
-        intervalRef.current = setInterval(captureFrame, 1000); // Capture every second
-    };
-
-    // Stop frame upload
-    const stopUploading = () => {
-        setIsUploading(false);
-        clearInterval(intervalRef.current);
-        setPrediction(''); // Clear prediction when stopped
+        setIsStreaming(false);
+        setPrediction('');
     };
 
     useEffect(() => {
         startCamera();
-        return () => stopUploading(); // Cleanup
+        return () => stopStreaming(); // Cleanup
     }, []);
 
     return (
@@ -109,7 +119,7 @@ const CameraFeed = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                 />
-                {isUploading && (
+                {isStreaming && (
                     <div
                         style={{
                             position: 'absolute',
@@ -124,7 +134,7 @@ const CameraFeed = () => {
                             boxShadow: '0 0 15px rgba(255, 111, 97, 0.8)',
                         }}
                     >
-                        Uploading...
+                        Streaming...
                     </div>
                 )}
             </motion.div>
@@ -151,23 +161,23 @@ const CameraFeed = () => {
 
             {/* Start/Stop Buttons */}
             <div className="mt-4">
-                {!isUploading ? (
+                {!isStreaming ? (
                     <motion.button
                         className="btn btn-success me-2"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={startUploading}
+                        onClick={startStreaming}
                     >
-                        🚀 Start Uploading
+                        🚀 Start Streaming
                     </motion.button>
                 ) : (
                     <motion.button
                         className="btn btn-danger"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={stopUploading}
+                        onClick={stopStreaming}
                     >
-                        🛑 Stop Uploading
+                        🛑 Stop Streaming
                     </motion.button>
                 )}
             </div>
