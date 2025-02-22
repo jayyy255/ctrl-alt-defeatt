@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import io from 'socket.io-client';
+import BackButton from './BackButon';
 
 // Set up socket connection
 const socket = io("http://localhost:5000");
@@ -11,6 +12,7 @@ const CameraFeed = () => {
   const canvasRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const [prediction, setPrediction] = useState('');
+  const [file, setFile] = useState(null); // State to hold the selected file
   let intervalRef = useRef(null);
 
   // Start camera stream
@@ -39,10 +41,24 @@ const CameraFeed = () => {
   };
 
   // Send frame to Flask backend
-  const sendFrameToBackend = async (blob) => {
+  const sendFrameToBackend = (blob) => {
     const formData = new FormData();
     formData.append('file', blob, 'frame.png');
     socket.emit('video_frame', blob);
+  };
+
+  // Handle file upload
+  const handleFileUpload = (event) => {
+    const uploadedFile = event.target.files[0];
+    setFile(uploadedFile);
+    if (uploadedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const blob = new Blob([reader.result], { type: uploadedFile.type });
+        sendFrameToBackend(blob);
+      };
+      reader.readAsArrayBuffer(uploadedFile);
+    }
   };
 
   // Start frame upload
@@ -75,6 +91,7 @@ const CameraFeed = () => {
 
   return (
     <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center" style={{ background: 'linear-gradient(135deg, #6a11cb, #2575fc)' }}>
+      <BackButton/>
       <motion.h1
         className="text-center mb-4 display-4 fw-bold"
         initial={{ opacity: 0, y: -50 }}
@@ -167,6 +184,25 @@ const CameraFeed = () => {
             🛑 Stop Uploading
           </motion.button>
         )}
+      </div>
+
+      {/* File Upload Button */}
+      <div className="mt-4">
+        <motion.button
+          className="btn btn-primary me-2"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => document.getElementById('fileInput').click()}
+        >
+          📁 Upload File
+        </motion.button>
+        <input
+          type="file"
+          id="fileInput"
+          style={{ display: 'none' }}
+          accept="video/*,image/*"
+          onChange={handleFileUpload}
+        />
       </div>
 
       {/* Hidden Canvas for Frame Capture */}
