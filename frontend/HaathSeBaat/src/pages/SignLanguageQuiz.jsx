@@ -3,21 +3,24 @@ import { motion } from 'framer-motion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import io from 'socket.io-client';
 
+// Set up socket connection
 const socket = io("http://localhost:8000");
 
 const SignLanguageQuiz = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [isRecording, setIsRecording] = useState(false);
-  const [feedback, setFeedback] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [prediction, setPrediction] = useState('');
+  const [isCorrect, setIsCorrect] = useState(false);
 
   const questions = [
-    { id: 1, question: 'Show the sign for Thank You', expectedAnswer: 'Thank You' },
-    { id: 2, question: 'Perform the sign for Hello', expectedAnswer: 'Hello' },
-    { id: 3, question: 'Demonstrate the sign for I Love You', expectedAnswer: 'I Love you' }
+    { id: 1, question: "Show the sign for 'Thank You'", answer: "Thank You" },
+    { id: 2, question: "Show the sign for 'Hello'", answer: "Hello" },
+    { id: 3, question: "Show the sign for 'Sorry'", answer: "Sorry" }
   ];
 
+  // Start camera stream
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -25,10 +28,11 @@ const SignLanguageQuiz = () => {
         videoRef.current.srcObject = stream;
       }
     } catch (error) {
-      console.error('Error accessing camera:', error);
+      console.error('🚫 Error accessing the camera:', error);
     }
   };
 
+  // Capture frame from video
   const captureFrame = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -41,45 +45,53 @@ const SignLanguageQuiz = () => {
     }
   };
 
+  // Send frame to backend
   const sendFrameToBackend = async (blob) => {
     const formData = new FormData();
     formData.append('file', blob, 'frame.png');
-    const question = questions[currentQuestion];
 
-    socket.emit('video_frame', { img: blob, ans: question.expectedAnswer });
+    const currentQuestion = questions[currentQuestionIndex];
+    socket.emit('video_frame', { img: blob, ans: currentQuestion.answer });
   };
 
-  const startRecording = () => {
-    setIsRecording(true);
-    setFeedback('');
-    setInterval(captureFrame, 1000);
+  // Start frame capture
+  const startUploading = () => {
+    setIsUploading(true);
+    const interval = setInterval(() => {
+      if (!isCorrect) {
+        captureFrame();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
   };
 
-  const stopRecording = () => {
-    setIsRecording(false);
+  // Stop frame capture
+  const stopUploading = () => {
+    setIsUploading(false);
+    setPrediction('');
   };
 
   useEffect(() => {
     startCamera();
 
+    // Listen for backend prediction
     socket.on('prediction', (data) => {
-      const { match } = data;
-      setFeedback(match ? '✅ Correct!' : '❌ Incorrect. Try again.');
+      setPrediction(data.prediction);
+      if (data.match) {
+        setIsCorrect(true);
+        setTimeout(() => {
+          setIsCorrect(false);
+          setCurrentQuestionIndex((prev) => prev + 1);
+        }, 2000);
+      }
     });
 
     return () => {
       socket.off('prediction');
+      stopUploading();
     };
-  }, []);
-
-  const nextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-      setFeedback('');
-    } else {
-      alert('Quiz completed!');
-    }
-  };
+  }, [currentQuestionIndex]);
 
   return (
     <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center" style={{ background: 'linear-gradient(135deg, #6a11cb, #2575fc)' }}>
@@ -90,42 +102,59 @@ const SignLanguageQuiz = () => {
         transition={{ duration: 1 }}
         style={{ color: '#fff' }}
       >
-        Sign Language Quiz
+        ✋ Sign Language Quiz
       </motion.h1>
 
-      <div className="mb-4 p-3 bg-white rounded shadow">
-        <h3>{questions[currentQuestion].question}</h3>
-      </div>
+      {currentQuestionIndex < questions.length ? (
+        <>
+          <h2 className="text-white mb-3">{questions[currentQuestionIndex].question}</h2>
+          <motion.video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="rounded shadow-lg mb-3"
+            style={{ width: '640px', border: '10px solid #fff' }}
+          />
 
-      <div className="video-section mb-3">
-        <motion.video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="rounded shadow-lg"
-          style={{ width: '640px', border: '10px solid #fff' }}
-        />
-        <canvas ref={canvasRef} style={{ display: 'none' }} />
-      </div>
+          {isUploading ? (
+            <motion.button
+              className="btn btn-danger"
+              whileHover={{ scale: 1.1 }}
+              onClick={stopUploading}
+            >🛑 Stop Uploading</motion.button>
+          ) : (
+            <motion.button
+              className="btn btn-success"
+              whileHover={{ scale: 1.1 }}
+              onClick={startUploading}
+            >🚀 Start Answering</motion.button>
+          )}
 
-      {feedback && (
+          {prediction && (
+            <motion.div
+              className="mt-4 p-3 rounded shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              style={{ backgroundColor: '#fff', color: isCorrect ? 'green' : 'red' }}
+            >
+              {isCorrect ? '✅ Correct! Moving to next question...' : `❌ Predicted: ${prediction}`}
+            </motion.div>
+          )}
+        </>
+      ) : (
         <motion.div
-          className="mt-3 p-2 bg-light rounded"
+          className="p-4 rounded shadow-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          style={{ backgroundColor: '#fff', color: '#007bff' }}
         >
-          {feedback}
+          🎉 Quiz Complete! Great Job!
         </motion.div>
       )}
 
-      <div className="mt-4">
-        {!isRecording ? (
-          <button className="btn btn-primary me-2" onClick={startRecording}>🎥 Start Recording</button>
-        ) : (
-          <button className="btn btn-danger" onClick={stopRecording}>🛑 Stop Recording</button>
-        )}
-        <button className="btn btn-success ms-2" onClick={nextQuestion} disabled={!feedback}>➡️ Next Question</button>
-      </div>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
     </div>
   );
 };
