@@ -1,10 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const path = require('path');
-const connectDB = require('./config/db');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import connectDB from './config/db.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -28,7 +32,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(bodyParser.json({ limit: '10mb' }));
 
 // 🔐 Authentication routes
-app.use('/api/auth', require('./routes/auth'));
+import authRoutes from './routes/auth.js';
+app.use('/api/auth', authRoutes);
 
 // 📸 Upload frame endpoint
 app.post('/upload-frame', (req, res) => {
@@ -57,6 +62,10 @@ app.post('/upload-frame', (req, res) => {
 
 // 🌍 Root endpoint
 app.get('/', (req, res) => res.send('🚀 API is running...'));
+
+// 🎤 Transcription route
+import transcriptionRoutes from './routes/transcriptionRoutes.js';
+app.use('/api/transcription', transcriptionRoutes);
 
 // 🚀 Start server
 const PORT = process.env.PORT || 3000;

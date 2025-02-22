@@ -8,11 +8,11 @@ const SignOfTheDay: React.FC = () => {
       <h2>Sign of the Day</h2>
       <div className="video-container">
         <iframe
-          width="100%"
-          height="315"
-          src="https://www.youtube.com/embed/Qy_q0sAucuw?si=ztvuDVzKAL_uyQeO"
-          frameBorder="0"
-          allowFullScreen
+          width="200"
+          height="150"
+          src="https://www.youtube.com/embed/ciKoJA7fuQc?si=fLcLguvCxFh01Be7"
+          title="Sign of the Day"
+          allow="autoplay; encrypted-media"
         ></iframe>
       </div>
     </div>

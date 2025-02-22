@@ -1,3 +1,4 @@
+// AnimatedButton.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
@@ -8,7 +9,8 @@ const AnimatedButton = ({
   loading = false, 
   variant = "primary", 
   className = '', 
-  path = "*" ,
+  path = "*",
+  style = {},
   ...props 
 }) => {
   const itemVariants = {
@@ -16,32 +18,75 @@ const AnimatedButton = ({
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { duration: 0.4 }
+      transition: { duration: 0.4, type: "spring" }
     }
   };
 
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
+  
   const LoadingSpinner = () => (
-    <motion.span
-      animate={{ rotate: 360 }}
-      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-      style={{ display: 'inline-block' }}
+    <motion.div
+      style={{ 
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '5px'
+      }}
     >
-      ↻
-    </motion.span>
+      <motion.span
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: 1 }}
+        transition={{ repeat: Infinity, duration: 0.5, repeatType: "reverse" }}
+      >
+        ●
+      </motion.span>
+      <motion.span
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: 1 }}
+        transition={{ repeat: Infinity, duration: 0.5, repeatType: "reverse", delay: 0.2 }}
+      >
+        ●
+      </motion.span>
+      <motion.span
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: 1 }}
+        transition={{ repeat: Infinity, duration: 0.5, repeatType: "reverse", delay: 0.4 }}
+      >
+        ●
+      </motion.span>
+    </motion.div>
   );
+
+  const defaultStyle = {
+    backgroundColor: '#e74c3c',
+    color: '#fff',
+    fontWeight: 'bold',
+    border: 'none',
+    boxShadow: '0 4px 0 #6b46c1', 
+    position: 'relative',
+    top: 0,
+    ...style
+  };
 
   return (
     <motion.div
       variants={itemVariants}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ 
+        scale: 1.05,
+        transition: { duration: 0.2 } 
+      }}
+      whileTap={{ 
+        scale: 0.95,
+        y: 4,
+        transition: { duration: 0.1 } 
+      }}
     >
       <Button 
         variant={variant} 
-        className={className}
+        className={`px-4 py-2 ${className}`}
         disabled={loading}
-        onClick={() => navigate(path)}
+        onClick={() => !loading && navigate(path)}
+        style={defaultStyle}
         {...props}
       >
         {loading ? <LoadingSpinner /> : children}

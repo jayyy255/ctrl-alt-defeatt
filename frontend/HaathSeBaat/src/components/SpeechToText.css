@@ -1,0 +1,45 @@
+/* Typewriter Animation */
+.typewriter {
+    overflow: hidden; /* Hide overflow */
+    border-right: 0.15em solid #9933cc; /* Cursor effect */
+    white-space: pre-wrap; /* Preserve line breaks */
+    margin: 0 auto;
+    letter-spacing: 0.15em;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink-caret {
+    from,
+    to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #9933cc;
+    }
+  }
+  
+  /* Button Animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .listening {
+    animation: pulse 1.5s infinite;
+  }
