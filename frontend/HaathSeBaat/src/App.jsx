@@ -14,7 +14,9 @@ import AnimatedFormContainer from './components/animated/AnimatedFormContainer';
 import Translator from './pages/Translator';
 import AboutUs from './components/AboutUs';
 import SpeechToText from './components/SpeechToText';
+import SignLanguageQuiz from './pages/SignLanguageQuiz';
 import Features from './components/features';
+import RandomSign from './components/Random';
 
 function AuthPage() {
     const [activeTab, setActiveTab] = useState('login');
@@ -61,7 +63,9 @@ function App() {
                     <Route path="/" element={<h1>Home Page</h1>} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/stt" element={<SpeechToText/>} />
-                    <Route path="/features" element={<Features/>} />
+                    <Route path="/Game1" element={<SignLanguageQuiz/>}/>
+                    <Route path="/features" element={<Features/>}/>
+                    <Route path="/randomsign" element={<RandomSign/>}/>
                 </Routes>
             </div>
         </Router>

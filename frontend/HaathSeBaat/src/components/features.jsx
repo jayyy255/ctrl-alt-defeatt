@@ -1,5 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 
 
 const featuresList = [
@@ -26,6 +27,7 @@ const featuresList = [
 ]
 
 const Features = () => {
+  const navigate = useNavigate() ;
   return (
     <div className="bg-light py-5" id="features">
       <div className="container">
@@ -57,7 +59,7 @@ const Features = () => {
             className="col-12 d-flex justify-content-center mt-4"
           >
             <button
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/translator")}
               className="btn btn-success btn-lg w-50 fw-bold text-white shadow-sm"
             >
               Learn More
