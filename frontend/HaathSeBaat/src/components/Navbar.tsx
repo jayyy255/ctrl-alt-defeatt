@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const LinkIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -17,50 +19,67 @@ const UserIcon = () => (
 );
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const navItems = ["Home", "About Us", "Features"];
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-black py-1 fs-5  shadow-sm">
-      <div className="container">
-        <a className="navbar-brand text-white fs-" href="#">Navbar</a>
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarNavDropdown" 
-          aria-controls="navbarNavDropdown" 
-          aria-expanded="false" 
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
+    <nav className="navbar navbar-expand-lg navbar-light bg-black py-1 fs-5 shadow-sm">
+      <div className="container d-flex justify-content-between align-items-center">
+        <a className="navbar-brand text-white fs-4" href="#">Navbar</a>
+
+        <button className="navbar-toggler text-white" type="button" onClick={toggleMenu}>
+          {isOpen ? <FaTimes /> : <FaBars />}
         </button>
-        <div className="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+
+        <motion.div
+          className={`collapse navbar-collapse ${isOpen ? 'd-block' : 'd-none'} d-lg-flex justify-content-center`}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+        >
           <ul className="navbar-nav">
-            {["Home", "About Us", "Features"].map((tab, index) => (
-              <li key={index} className="nav-item mx-2">
-                <Link className="nav-link text-white custom-hover" to={`/${tab.replace(/\s+/g, '').toLowerCase()}`}>
-                  {tab}
-                </Link>
-              </li>
-            ))}
-            <li className="nav-item dropdown mx-2">
-              <a 
-                className="nav-link dropdown-toggle text-white custom-hover" 
-                href="#" 
-                id="navbarDropdownMenuLink" 
-                role="button" 
-                data-bs-toggle="dropdown" 
-                aria-haspopup="true" 
-                aria-expanded="false"
+            {navItems.map((tab, index) => (
+              <motion.li
+                key={index}
+                className="nav-item mx-2"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                Dropdown
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                {["Action", "Another action", "Something else here"].map((item, index) => (
-                  <a key={index} className="dropdown-item" href="#">{item}</a>
-                ))}
-              </div>
+                <button className="btn text-white custom-hover">
+                  {tab}
+                </button>
+              </motion.li>
+            ))}
+
+            <li className="nav-item dropdown mx-2">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <a
+                  className="nav-link dropdown-toggle text-white custom-hover"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  {["Action", "Another action", "Something else here"].map((item, index) => (
+                    <a key={index} className="dropdown-item" href="#">{item}</a>
+                  ))}
+                </div>
+              </motion.div>
             </li>
           </ul>
-        </div>
+        </motion.div>
       </div>
 
       <style jsx>{`
@@ -77,6 +96,13 @@ const Navbar = () => {
         }
         .navbar {
           min-height: 80px;
+        }
+        @media (max-width: 992px) {
+          .navbar-collapse {
+            background-color: black;
+            padding: 1rem;
+            border-radius: 10px;
+          }
         }
       `}</style>
     </nav>
