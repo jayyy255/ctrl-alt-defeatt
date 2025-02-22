@@ -1,45 +1,73 @@
 /* Typewriter Animation */
 .typewriter {
-    overflow: hidden; /* Hide overflow */
-    border-right: 0.15em solid #9933cc; /* Cursor effect */
-    white-space: pre-wrap; /* Preserve line breaks */
-    margin: 0 auto;
-    letter-spacing: 0.15em;
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  overflow: hidden; /* Hide overflow */
+  border-right: 0.15em solid #9933cc; /* Cursor effect */
+  white-space: nowrap; /* Prevent text from wrapping */
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  max-width: 100%; /* Responsive handling */
+}
+
+@keyframes typing {
+  from {
+    width: 0;
   }
-  
-  @keyframes typing {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
+  to {
+    width: 100%; /* Full-width typewriter effect */
   }
-  
-  @keyframes blink-caret {
-    from,
-    to {
-      border-color: transparent;
-    }
-    50% {
-      border-color: #9933cc;
-    }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
   }
-  
-  /* Button Animation */
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
+  50% {
+    border-color: #9933cc; /* Blink color */
   }
-  
+}
+
+/* Button Animation - Pulse Effect */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(153, 51, 204, 0.4);
+  }
+  50% {
+    transform: scale(1.1); /* Slight zoom-in effect */
+    box-shadow: 0 0 15px 10px rgba(153, 51, 204, 0.2); /* Glow effect */
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(153, 51, 204, 0.4);
+  }
+}
+
+.listening {
+  animation: pulse 1.5s infinite; /* Continuous pulse effect */
+  background-color: #9933cc; /* Purple button when active */
+  color: white; /* White text */
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.listening:hover {
+  background-color: #7d26cd; /* Darker shade on hover */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .typewriter {
+    font-size: 1.5rem; /* Adjust font size for mobile */
+  }
+
   .listening {
-    animation: pulse 1.5s infinite;
+    font-size: 1rem; /* Smaller font for buttons on mobile */
+    padding: 8px 16px;
   }
+}
