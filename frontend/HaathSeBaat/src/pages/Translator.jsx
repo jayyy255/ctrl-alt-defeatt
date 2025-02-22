@@ -94,7 +94,7 @@ const Translator = () => {
       image: "https://png.pngtree.com/png-clipart/20220927/original/pngtree-sign-language-communication-for-the-deaf-and-the-disabled-png-image_8635918.png",
       title: "Random Sign Learner",
       description: "Get a chance to learn one new sign everyday",
-      path: "/random", // Path for this card
+      path: "/randomsign", // Path for this card
     },
   ];
 
