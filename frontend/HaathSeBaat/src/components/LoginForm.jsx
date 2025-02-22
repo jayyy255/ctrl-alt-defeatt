@@ -132,7 +132,7 @@ const LoginForm = () => {
                   type="submit"
                   className="w-100 py-2 rounded-pill fw-bold"
                   loading={loading}
-                  path='/stt'
+                  path='/translator'
                   style={{ 
                     backgroundColor: '#e74c3c', 
                     color: '#fff',
