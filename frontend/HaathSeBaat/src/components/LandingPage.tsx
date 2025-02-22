@@ -59,10 +59,15 @@ function LandingPage() {
                       transition={{ duration: 1 }}
                     >
                       <div className="video-container">
-                        <video width="200" height="150" controls>
-                          <source src="/sign_video.mp4" type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
+                      <iframe 
+  width="200" 
+  height="150" 
+  src="https://www.youtube.com/embed/ciKoJA7fuQc?si=fLcLguvCxFh01Be7" 
+  title="Sign of the Day" 
+  
+  allow="autoplay; encrypted-media" 
+  >
+</iframe>
                       </div>
                     </motion.div>
                   </div>
@@ -78,7 +83,9 @@ function LandingPage() {
                         Learn a new ASL word every day through our{" "}
                         <strong>Daily Sign Challenge</strong>
                       </p>
-                      <button className="btn btn-light">Join Now</button>
+                      <button className="btn btn-light" onClick={() => navigate("/signoftheday")}>
+    Join Now
+</button>
                     </div>
                   </div>
                 </div>
